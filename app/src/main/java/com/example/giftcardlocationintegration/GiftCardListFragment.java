@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class GiftCardListFragment extends Fragment {
@@ -25,7 +26,8 @@ public class GiftCardListFragment extends Fragment {
     private NewCardCallback callback;
 
     public interface NewCardCallback {
-        public void addNewCardClicked();
+         void addNewCardClicked();
+         void finishedEditCard();
     }
 
     @Nullable
@@ -35,7 +37,7 @@ public class GiftCardListFragment extends Fragment {
         View giftCardFragmentLayout = inflater.inflate(R.layout.fragment_usercards, container, false);
 
         giftCardRecyclerView = giftCardFragmentLayout.findViewById(R.id.userCardsRecyclerView);
-        newItemFab = giftCardFragmentLayout.findViewById(R.id.addNewGiftCard);
+        newItemFab = giftCardFragmentLayout.findViewById(R.id.confirmationFab);
         giftCardAdapter = new GiftCardAdapter(generateTestingList(), getLayoutInflater());
 
 
@@ -69,7 +71,7 @@ public class GiftCardListFragment extends Fragment {
         List<Giftcard> testList = new ArrayList<>();
 
         for (int i = 0; i < 50; i++) {
-            testList.add(new Giftcard("Name: " + i, "Balance: " + i, "Expiration: " + i));
+            testList.add(new Giftcard("Name: " + i, "Balance: " + i, new Date(), i, i));
         }
         return testList;
     }

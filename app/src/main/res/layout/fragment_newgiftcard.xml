@@ -26,10 +26,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:hint="Enter barcode">
+
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            />
+            android:inputType="number" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -38,10 +39,11 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
         android:hint="Enter pin code">
+
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            />
+            android:inputType="number" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -56,13 +58,25 @@
             />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/addNewGiftCard"
-        android:layout_width="wrap_content"
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/enterBalance"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:hint="Enter balance">
+        <com.google.android.material.textfield.TextInputEditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/confirmationFab"
+        android:layout_width="60dp"
+        android:layout_height="53dp"
         android:layout_marginLeft="325dp"
-        android:layout_marginTop="256dp"
-        android:layout_marginBottom="32dp"
+        android:layout_marginTop="160dp"
+        android:layout_marginBottom="320dp"
         android:scaleX="1.25"
         android:scaleY="1.25"
         android:src="@drawable/ic_action_confirmation"></com.google.android.material.floatingactionbutton.FloatingActionButton>

@@ -8,6 +8,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.textview.MaterialTextView;
 
+import java.util.Date;
+
 public class GiftCardViewHolder extends RecyclerView.ViewHolder {
     MaterialTextView giftCardStoreName = itemView.findViewById(R.id.cardNameTextView);
     MaterialTextView giftCardExpirationDate = itemView.findViewById(R.id.expirationTextView);
@@ -22,6 +24,6 @@ public class GiftCardViewHolder extends RecyclerView.ViewHolder {
     public void updateGiftCardViewHolder(Giftcard giftcard) {
         giftCardStoreName.setText(giftcard.cardName);
         giftCardBalanceAmount.setText(giftcard.cardBalance);
-        giftCardExpirationDate.setText(giftcard.cardExpiration);
+        giftCardExpirationDate.setText(new Date().toString());
     }
 }

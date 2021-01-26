@@ -38,4 +38,10 @@ public class MainActivity extends AppCompatActivity implements GiftCardListFragm
     public void addNewCardClicked() {
         getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, NewGiftCardFragment.newInstance()).addToBackStack(null).commit();
     }
+
+    @Override
+    public void finishedEditCard() {
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, GiftCardListFragment.newInstance()).addToBackStack(null).commit();
+
+    }
 }
