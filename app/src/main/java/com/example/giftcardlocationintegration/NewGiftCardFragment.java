@@ -41,6 +41,7 @@ public class NewGiftCardFragment extends Fragment implements DatePickerFragment.
     private Date date;
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
     private AutocompleteSupportFragment autocompleteFragment;
+    private String selectedMerchant;
 
 
 
@@ -77,7 +78,6 @@ public class NewGiftCardFragment extends Fragment implements DatePickerFragment.
 
 
         confirmationFab = giftCardFragmentLayout.findViewById(R.id.confirmationFab);
-        merchantTextView = giftCardFragmentLayout.findViewById(R.id.enterMerchantField);
         barcodeTextView = giftCardFragmentLayout.findViewById(R.id.enterBarcodeField);
         pincodeTextView = giftCardFragmentLayout.findViewById(R.id.enterPinCodeField);
         balanceTextView = giftCardFragmentLayout.findViewById(R.id.enterBalance);
@@ -95,8 +95,7 @@ public class NewGiftCardFragment extends Fragment implements DatePickerFragment.
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(@NotNull Place place) {
-                // TODO: Get info about the selected place.
-                Log.i(TAG, "Place: " + place.getName() + ", " + place.getId());
+                selectedMerchant = place.getName();
             }
 
 
@@ -174,7 +173,7 @@ public class NewGiftCardFragment extends Fragment implements DatePickerFragment.
     }
 
     private boolean confirmUserInput() {
-        if (merchantTextView.getEditText().getText() == null ||
+        if (selectedMerchant == null ||
         barcodeTextView.getEditText().getText() == null ||
         pincodeTextView.getEditText().getText() == null ||
         balanceTextView.getEditText().getText() == null ||
@@ -183,7 +182,7 @@ public class NewGiftCardFragment extends Fragment implements DatePickerFragment.
         } else {
             float f = Float.parseFloat(balanceTextView.getEditText().getText().toString());
             Integer i = Integer.parseInt(pincodeTextView.getEditText().getText().toString());
-            giftCardToBeAdded = new Giftcard(merchantTextView.getEditText().getText().toString(), f, date, barcodeTextView.getEditText().getText().toString(),
+            giftCardToBeAdded = new Giftcard(selectedMerchant, f, date, barcodeTextView.getEditText().getText().toString(),
                     i);
             return true;
         }
