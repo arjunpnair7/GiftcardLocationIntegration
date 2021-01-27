@@ -12,12 +12,12 @@ public class Giftcard {
     public int identifier;
 
     public String cardName;
-    public String cardBalance;
+    public float cardBalance;
     public Date cardExpiration;
-    public int cardBarcodeNumber;
+    public String cardBarcodeNumber;
     public int cardPinCode;
 
-    public Giftcard(String cardName, String cardBalance, Date cardExpiration, int cardBarcodeNumber, int cardPinCode) {
+    public Giftcard(String cardName, float cardBalance, Date cardExpiration, String cardBarcodeNumber, int cardPinCode) {
         this.cardName = cardName;
         this.cardBalance = cardBalance;
         this.cardExpiration = cardExpiration;

@@ -11,7 +11,9 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.room.Room;
 
+import com.example.giftcardlocationintegration.database.GiftCardDatabase;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -23,11 +25,23 @@ public class GiftCardListFragment extends Fragment {
     private GiftCardAdapter giftCardAdapter;
     private RecyclerView giftCardRecyclerView;
     private FloatingActionButton newItemFab;
-    private NewCardCallback callback;
+    private Callbacks callback;
+    public static GiftCardDatabase giftCardDatabase;
+    private String dataBaseName = "giftcardsdatabase";
 
-    public interface NewCardCallback {
+    public interface Callbacks {
          void addNewCardClicked();
          void finishedEditCard();
+         //void finishedPickingDate(Date date);
+
+    }
+
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        giftCardDatabase = Room.databaseBuilder(getContext(), GiftCardDatabase.class, dataBaseName).build();
+
     }
 
     @Nullable
@@ -63,7 +77,7 @@ public class GiftCardListFragment extends Fragment {
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);
-        callback = (NewCardCallback) context;
+        callback = (Callbacks) context;
     }
 
     //Temporary method created to generate a testing list, will later be replaced with actual user data
@@ -71,7 +85,7 @@ public class GiftCardListFragment extends Fragment {
         List<Giftcard> testList = new ArrayList<>();
 
         for (int i = 0; i < 50; i++) {
-            testList.add(new Giftcard("Name: " + i, "Balance: " + i, new Date(), i, i));
+            testList.add(new Giftcard("Name: " + i, 1.002f, new Date(), "i", i));
         }
         return testList;
     }

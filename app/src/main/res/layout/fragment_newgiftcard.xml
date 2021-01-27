@@ -30,7 +30,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="number" />
+            android:inputType="none" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -46,28 +46,32 @@
             android:inputType="number" />
     </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
+
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/enterExpirationDate"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="69dp"
         android:layout_marginTop="32dp"
-        android:hint="Enter expiration date">
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
-    </com.google.android.material.textfield.TextInputLayout>
+        android:text="Enter date"
+        android:textAlignment="textStart"
+        android:textColor="@color/black"
+        android:textColorHighlight="@android:color/primary_text_dark"
+        android:textColorLink="#E91E63"
+        app:backgroundTint="#D9D9D9"></com.google.android.material.button.MaterialButton>
+
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/enterBalance"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
+        app:placeholderText="Enter Date"
         android:hint="Enter balance">
+
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            />
+            android:inputType="none|number|numberDecimal" />
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton

@@ -23,7 +23,7 @@ public class GiftCardViewHolder extends RecyclerView.ViewHolder {
     //Method to update contents of view holder
     public void updateGiftCardViewHolder(Giftcard giftcard) {
         giftCardStoreName.setText(giftcard.cardName);
-        giftCardBalanceAmount.setText(giftcard.cardBalance);
+        giftCardBalanceAmount.setText(String.valueOf(giftcard.cardBalance));
         giftCardExpirationDate.setText(new Date().toString());
     }
 }

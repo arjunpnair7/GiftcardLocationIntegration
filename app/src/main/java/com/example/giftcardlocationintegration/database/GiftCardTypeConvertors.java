@@ -1,4 +1,4 @@
-package com.example.giftcardlocationintegration;
+package com.example.giftcardlocationintegration.database;
 
 import androidx.room.TypeConverter;
 

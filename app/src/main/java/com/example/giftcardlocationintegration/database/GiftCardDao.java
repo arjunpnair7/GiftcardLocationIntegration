@@ -1,9 +1,11 @@
-package com.example.giftcardlocationintegration;
+package com.example.giftcardlocationintegration.database;
 
 
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
+
+import com.example.giftcardlocationintegration.Giftcard;
 
 import java.util.List;
 
