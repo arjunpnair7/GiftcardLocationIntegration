@@ -9,6 +9,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.room.Room;
@@ -28,6 +30,7 @@ public class GiftCardListFragment extends Fragment {
     private Callbacks callback;
     public static GiftCardDatabase giftCardDatabase;
     private String dataBaseName = "giftcardsdatabase";
+    private GiftCardViewModel giftCardViewModel;
 
     public interface Callbacks {
          void addNewCardClicked();
@@ -41,6 +44,14 @@ public class GiftCardListFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         giftCardDatabase = Room.databaseBuilder(getContext(), GiftCardDatabase.class, dataBaseName).build();
+        ViewModelProvider provider = new ViewModelProvider(GiftCardListFragment.this);
+        giftCardViewModel = provider.get(GiftCardViewModel.class);
+
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
 
     }
 
@@ -52,11 +63,28 @@ public class GiftCardListFragment extends Fragment {
 
         giftCardRecyclerView = giftCardFragmentLayout.findViewById(R.id.userCardsRecyclerView);
         newItemFab = giftCardFragmentLayout.findViewById(R.id.confirmationFab);
-        giftCardAdapter = new GiftCardAdapter(generateTestingList(), getLayoutInflater());
-
 
         giftCardRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        giftCardRecyclerView.setAdapter(giftCardAdapter);
+
+
+        giftCardViewModel.myGiftCards.observe(getViewLifecycleOwner(), new Observer<List<Giftcard>>() {
+            @Override
+            public void onChanged(List<Giftcard> giftcards) {
+                giftCardAdapter = new GiftCardAdapter(giftcards, getLayoutInflater());
+                giftCardRecyclerView.setAdapter(giftCardAdapter);
+            }
+        });
+
+
+
+
+
+        //giftCardAdapter = new GiftCardAdapter(generateTestingList(), getLayoutInflater());
+
+
+        //giftCardRecyclerView.setAdapter(giftCardAdapter);
+
+
 
 
         newItemFab.setOnClickListener(new View.OnClickListener() {

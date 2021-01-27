@@ -93,6 +93,7 @@ public class NewGiftCardFragment extends Fragment implements DatePickerFragment.
 
         return giftCardFragmentLayout;
 
+
     }
 
     public static NewGiftCardFragment newInstance() {

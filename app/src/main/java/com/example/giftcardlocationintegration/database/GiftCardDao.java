@@ -1,6 +1,7 @@
 package com.example.giftcardlocationintegration.database;
 
 
+import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
@@ -16,5 +17,5 @@ public interface GiftCardDao {
     public void addNewGiftCard(Giftcard giftCard);
 
     @Query("SELECT * FROM giftcard")
-    public List<Giftcard> getAllGiftCards();
+    public LiveData<List<Giftcard>> getAllGiftCards();
 }
