@@ -1,6 +1,10 @@
 package com.example.giftcardlocationintegration;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.Context;
+import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +12,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -40,12 +45,18 @@ public class GiftCardListFragment extends Fragment {
     }
 
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         giftCardDatabase = Room.databaseBuilder(getContext(), GiftCardDatabase.class, dataBaseName).build();
         ViewModelProvider provider = new ViewModelProvider(GiftCardListFragment.this);
         giftCardViewModel = provider.get(GiftCardViewModel.class);
+        createNotificationChannel();
+
+        Intent serviceIntent = new Intent(getContext(), GiftCardLocationService.class);
+        //serviceIntent.putExtra("inputExtra", "test");
+        getActivity().startForegroundService(serviceIntent);
 
     }
 
@@ -116,5 +127,17 @@ public class GiftCardListFragment extends Fragment {
             testList.add(new Giftcard("Name: " + i, 1.002f, new Date(), "i", i));
         }
         return testList;
+    }
+
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel serviceChannel = new NotificationChannel(
+                    GiftCardLocationService.CHANNEL_ID,
+                    "Example Service Channel",
+                    NotificationManager.IMPORTANCE_DEFAULT
+            );
+            NotificationManager manager = getActivity().getSystemService(NotificationManager.class);
+            manager.createNotificationChannel(serviceChannel);
+        }
     }
 }
