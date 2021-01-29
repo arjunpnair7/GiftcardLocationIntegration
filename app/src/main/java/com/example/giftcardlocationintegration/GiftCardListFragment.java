@@ -49,6 +49,10 @@ public class GiftCardListFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+
+
         giftCardDatabase = Room.databaseBuilder(getContext(), GiftCardDatabase.class, dataBaseName).build();
         ViewModelProvider provider = new ViewModelProvider(GiftCardListFragment.this);
         giftCardViewModel = provider.get(GiftCardViewModel.class);
