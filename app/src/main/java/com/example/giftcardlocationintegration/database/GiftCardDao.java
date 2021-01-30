@@ -21,4 +21,7 @@ public interface GiftCardDao {
 
     @Query("SELECT cardName FROM giftcard")
     public LiveData<List<String>> getCurrentGiftCardNames();
+
+    @Query("DELETE FROM giftcard")
+    public void clearGiftCardTable();
 }

@@ -81,7 +81,7 @@ public class GiftCardLocationService extends Service {
         super.onCreate();
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
 
-        startForeground(1, buildNotification("test"));
+        startForeground(1, buildNotification("No nearby stores...=("));
 
 
         fusedLocationClient.getLastLocation()
@@ -120,10 +120,8 @@ public class GiftCardLocationService extends Service {
 
     private Notification buildNotification(String name) {
 
-        //lastUpdate = name;
-        if (prevString.equals(name)) {
-            return null;
-        }
+
+
 
         Intent notificationIntent = new Intent(this, MainActivity.class);
         notificationIntent.putExtra(USE_LOCATION_SERVICES, useLocationServices);
@@ -165,7 +163,6 @@ public class GiftCardLocationService extends Service {
 
                     @Override
                     public void onResponse(JSONObject response) {
-
                         try {
                             JSONArray object = response.getJSONArray("results");
                             String storeName;
@@ -174,17 +171,10 @@ public class GiftCardLocationService extends Service {
                                 storeName = layer.getString("name");
                                 Log.i(TAG, storeName);
                                 //nearbyLocations.clear();
-                                if (currentUserGiftCards.contains(storeName)) {
+                                if (!nearbyLocations.contains(storeName) && currentUserGiftCards.contains(storeName)) {
                                     Log.i(TAG, "You have a gift card for " + storeName + "!");
                                     nearbyLocations.add(storeName);
-                                }
-                                if (lastNearbyLocations == nearbyLocations.size()) {
-                                    Log.i(TAG, "same data, do nothing");
-                                    //Do nothing
-                                } else {
                                     updateNotification(nearbyLocations);
-                                    lastNearbyLocations = nearbyLocations.size();
-                                    Log.i(TAG, "new data, so update notification");
                                 }
                             }
                         } catch (JSONException e) {
@@ -206,12 +196,14 @@ public class GiftCardLocationService extends Service {
         String result = "";
          for (int i = 0; i < nearbyStores.size(); i++) {
             result += "You are near a " + nearbyStores.get(i) + "!\n";
-             prevString += "You are near a " + nearbyStores.get(i) + "!\n";
         }
-
-
-
-
+         if (result.equals(prevString)) {
+             return;
+         }
+         prevString = "";
+         for (int i = 0; i < nearbyStores.size(); i++) {
+             prevString += "You are near a " + nearbyStores.get(i) + "!\n";
+         }
 
         Notification notification = buildNotification(result);
 

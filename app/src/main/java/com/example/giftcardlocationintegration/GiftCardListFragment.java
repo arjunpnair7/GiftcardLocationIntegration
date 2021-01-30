@@ -4,6 +4,7 @@ import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +15,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.TableLayout;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,6 +34,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class GiftCardListFragment extends Fragment {
 
@@ -63,6 +68,8 @@ public class GiftCardListFragment extends Fragment {
         ViewModelProvider provider = new ViewModelProvider(GiftCardListFragment.this);
         giftCardViewModel = provider.get(GiftCardViewModel.class);
         createNotificationChannel();
+        Log.i(TAG, "create");
+
 
 
 
@@ -81,7 +88,7 @@ public class GiftCardListFragment extends Fragment {
         MenuItem itemSwitch = menu.findItem(R.id.my_switch);
         itemSwitch.setActionView(R.layout.switch_layout);
         sw = (SwitchCompat) menu.findItem(R.id.my_switch).getActionView().findViewById(R.id.switchForActionBar);
-
+        Log.i(TAG, "created menu");
 
         sw.setChecked(GiftCardViewModel.useLocationServices);
         sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -89,7 +96,11 @@ public class GiftCardListFragment extends Fragment {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 GiftCardViewModel.useLocationServices = isChecked;
                 if (isChecked) {
-                    getActivity().startForegroundService(new Intent(getContext(), GiftCardLocationService.class));
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        getActivity().startForegroundService(new Intent(getContext(), GiftCardLocationService.class));
+                    } else {
+                        getActivity().startService(new Intent(getContext(), GiftCardLocationService.class));
+                    }
 
                 } else {
                     getActivity().stopService(new Intent(getContext(), GiftCardLocationService.class));
@@ -102,7 +113,12 @@ public class GiftCardListFragment extends Fragment {
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
+    }
 
     @Nullable
     @Override
