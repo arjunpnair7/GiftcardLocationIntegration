@@ -46,17 +46,17 @@ import java.util.List;
 public class GiftCardLocationService extends Service {
     private static final String TAG = "GiftCardLocationService";
     public static String CHANNEL_ID = "giftcardlocation";
-    private String lastUpdate = "";
     private FusedLocationProviderClient fusedLocationClient;
     private LocationCallback locationCallback;
     private LocationRequest locationRequest;
-    private String updatedUrl;
+    public static boolean useLocationServices = true;
     private String prevString = "";
     private List<String> nearbyLocations = new ArrayList<>();
     private int lastNearbyLocations = nearbyLocations.size();
     public static List<String> currentUserGiftCards = new ArrayList<>();
+    public static String USE_LOCATION_SERVICES = "uselocationservices";
     public static final String baseUrl = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=";
-    public static final String endUrl = "&radius=1500&type=restaurant&key=AIzaSyCqYR9FNPeSVJ5CrB41ii5gzQnvnepgGy4";
+    public static final String endUrl = "&radius=1500&type=restaurant&key=AIzaSyDhsoZx1j9eqOm5SmRbSOfnUi6ZgKGPFV8";
     public static final String testUrl = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=40.1020,-88.2272&radius=1500&type=restaurant&key=AIzaSyCqYR9FNPeSVJ5CrB41ii5gzQnvnepgGy4";
 
 
@@ -68,6 +68,12 @@ public class GiftCardLocationService extends Service {
     @Override
     public IBinder onBind(Intent intent) {
         return null;
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        intent.getBooleanExtra(LOCATION_SERVICE, false);
+        return super.onStartCommand(intent, flags, startId);
     }
 
     @Override
@@ -119,8 +125,10 @@ public class GiftCardLocationService extends Service {
             return null;
         }
 
-        Intent notificationIntent = new Intent(this, GiftCardListFragment.class);
+        Intent notificationIntent = new Intent(this, MainActivity.class);
+        notificationIntent.putExtra(USE_LOCATION_SERVICES, useLocationServices);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, 0);
+
 
         Notification builder = new NotificationCompat.Builder(this, CHANNEL_ID)
                 .setSmallIcon(R.drawable.common_google_signin_btn_icon_dark_normal_background)
@@ -149,6 +157,9 @@ public class GiftCardLocationService extends Service {
     }
 
     public void getData(double lat, double lon) {
+        if (useLocationServices == false) {
+            return;
+        }
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
                 (Request.Method.GET, createUrlBasedOnLocation(lat, lon), null, new Response.Listener<JSONObject>() {
 

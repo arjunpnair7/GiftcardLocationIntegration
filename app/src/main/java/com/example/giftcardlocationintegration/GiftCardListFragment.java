@@ -8,12 +8,17 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
+import androidx.appcompat.widget.SwitchCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -38,6 +43,7 @@ public class GiftCardListFragment extends Fragment {
     public static GiftCardDatabase giftCardDatabase;
     private String dataBaseName = "giftcardsdatabase";
     private GiftCardViewModel giftCardViewModel;
+    public static SwitchCompat sw;
 
     public interface Callbacks {
          void addNewCardClicked();
@@ -47,22 +53,18 @@ public class GiftCardListFragment extends Fragment {
     }
 
 
+
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-
 
         giftCardDatabase = Room.databaseBuilder(getContext(), GiftCardDatabase.class, dataBaseName).build();
         ViewModelProvider provider = new ViewModelProvider(GiftCardListFragment.this);
         giftCardViewModel = provider.get(GiftCardViewModel.class);
         createNotificationChannel();
 
-        Intent serviceIntent = new Intent(getContext(), GiftCardLocationService.class);
-        //serviceIntent.putExtra("inputExtra", "test");
-        getActivity().startForegroundService(serviceIntent);
+
 
     }
 
@@ -71,6 +73,36 @@ public class GiftCardListFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
     }
+
+    @Override
+    public void onCreateOptionsMenu(@NonNull Menu menu, @NonNull MenuInflater inflater) {
+        getActivity().getMenuInflater().inflate(R.menu.mainmenu, menu);
+
+        MenuItem itemSwitch = menu.findItem(R.id.my_switch);
+        itemSwitch.setActionView(R.layout.switch_layout);
+        sw = (SwitchCompat) menu.findItem(R.id.my_switch).getActionView().findViewById(R.id.switchForActionBar);
+
+
+        sw.setChecked(GiftCardViewModel.useLocationServices);
+        sw.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                GiftCardViewModel.useLocationServices = isChecked;
+                if (isChecked) {
+                    getActivity().startForegroundService(new Intent(getContext(), GiftCardLocationService.class));
+
+                } else {
+                    getActivity().stopService(new Intent(getContext(), GiftCardLocationService.class));
+                }
+            }
+        });
+
+
+
+
+    }
+
+
 
     @Nullable
     @Override
@@ -126,7 +158,9 @@ public class GiftCardListFragment extends Fragment {
     }
 
     public static GiftCardListFragment newInstance() {
-        return new GiftCardListFragment();
+        GiftCardListFragment fragment = new GiftCardListFragment();
+        fragment.setHasOptionsMenu(true);
+        return fragment;
     }
 
     @Override

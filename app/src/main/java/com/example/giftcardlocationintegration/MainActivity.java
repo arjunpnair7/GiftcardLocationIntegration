@@ -11,10 +11,13 @@ import androidx.fragment.app.Fragment;
 import android.Manifest;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.Toast;
 
@@ -41,11 +44,18 @@ public class MainActivity extends AppCompatActivity implements GiftCardListFragm
             getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, currentFragment).commit();
         }
 
+        //
 
 
 
 
     }
+
+   /* @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.mainmenu, menu);
+        return true;
+    } */
 
 
 
