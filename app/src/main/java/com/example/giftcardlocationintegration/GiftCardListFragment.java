@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,7 @@ import java.util.List;
 
 public class GiftCardListFragment extends Fragment {
 
+    private static final String TAG = "GiftCardListFragment";
     private GiftCardAdapter giftCardAdapter;
     private RecyclerView giftCardRecyclerView;
     private FloatingActionButton newItemFab;
@@ -87,6 +89,16 @@ public class GiftCardListFragment extends Fragment {
             public void onChanged(List<Giftcard> giftcards) {
                 giftCardAdapter = new GiftCardAdapter(giftcards, getLayoutInflater());
                 giftCardRecyclerView.setAdapter(giftCardAdapter);
+            }
+        });
+
+        giftCardViewModel.currentGiftCardNames.observe(getViewLifecycleOwner(), new Observer<List<String>>() {
+            @Override
+            public void onChanged(List<String> strings) {
+                GiftCardLocationService.currentUserGiftCards = strings;
+                for (int i = 0; i < GiftCardLocationService.currentUserGiftCards.size(); i++) {
+                    Log.i(TAG, GiftCardLocationService.currentUserGiftCards.get(i));
+                }
             }
         });
 

@@ -18,4 +18,7 @@ public interface GiftCardDao {
 
     @Query("SELECT * FROM giftcard")
     public LiveData<List<Giftcard>> getAllGiftCards();
+
+    @Query("SELECT cardName FROM giftcard")
+    public LiveData<List<String>> getCurrentGiftCardNames();
 }
