@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements GiftCardListFragm
         if (currentFragment == null) {
             currentFragment = GiftCardListFragment.newInstance();
             getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, currentFragment).commit();
+            GiftCardViewHolder.context = this;
         }
 
         //
