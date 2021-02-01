@@ -61,8 +61,6 @@ public class GiftCardListFragment extends Fragment {
          void addNewCardClicked();
          void finishedEditCard();
          void editExistingCard(String cardName, float cardBalance, Date cardExpiration, String cardBarcodeNumber, int cardPinCode);
-
-
     }
 
 
