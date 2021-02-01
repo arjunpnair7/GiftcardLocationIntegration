@@ -31,12 +31,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:hint="Enter barcode">
+        >
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
+            android:textColorHint="@color/black"
+            android:hint="Enter barcode"
             android:inputType="none" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -50,6 +51,7 @@
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textColorHint="@color/black"
             android:inputType="number" />
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -72,7 +74,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        app:placeholderText="Enter Date"
         android:hint="Enter balance">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -90,5 +91,6 @@
         android:layout_marginBottom="320dp"
         android:scaleX="1.25"
         android:scaleY="1.25"
-        android:src="@drawable/ic_action_confirmation"></com.google.android.material.floatingactionbutton.FloatingActionButton>
+        android:src="@drawable/ic_action_confirmation">
+    </com.google.android.material.floatingactionbutton.FloatingActionButton>
 </LinearLayout>

@@ -5,6 +5,7 @@ import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
 import androidx.room.Insert;
 import androidx.room.Query;
+import androidx.room.Update;
 
 import com.example.giftcardlocationintegration.Giftcard;
 
@@ -24,4 +25,7 @@ public interface GiftCardDao {
 
     @Query("DELETE FROM giftcard")
     public void clearGiftCardTable();
+
+    @Update
+    public void updateCard(Giftcard giftCard);
 }

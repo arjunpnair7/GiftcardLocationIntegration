@@ -22,6 +22,7 @@ import com.google.android.libraries.places.api.net.PlacesClient;
 import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
 import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.textview.MaterialTextView;
 
 import java.util.Arrays;
 import java.util.Date;
@@ -31,7 +32,6 @@ import java.util.concurrent.Executors;
 public class NewGiftCardFragment extends Fragment implements DatePickerFragment.DatePickerCallback {
     private String TAG = "NewGiftCardFragment";
 
-    private com.google.android.material.textfield.TextInputLayout merchantTextView;
     private com.google.android.material.textfield.TextInputLayout barcodeTextView;
     private com.google.android.material.textfield.TextInputLayout pincodeTextView;
     private static String apiKey = "AIzaSyD_bEHcl4NAJzxYtsGChrGS9dNRNYAdfqo";
@@ -42,6 +42,8 @@ public class NewGiftCardFragment extends Fragment implements DatePickerFragment.
     private ExecutorService executorService = Executors.newSingleThreadExecutor();
     private AutocompleteSupportFragment autocompleteFragment;
     private String selectedMerchant;
+    public Date selectedDate;
+    public boolean isUpdating;
 
 
 
@@ -55,15 +57,7 @@ public class NewGiftCardFragment extends Fragment implements DatePickerFragment.
         super.onCreate(savedInstanceState);
 
         Places.initialize(getContext(), apiKey);
-
         PlacesClient placesClient = Places.createClient(getContext());
-
-
-
-
-
-
-
 
     }
 
@@ -75,7 +69,11 @@ public class NewGiftCardFragment extends Fragment implements DatePickerFragment.
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View giftCardFragmentLayout = inflater.inflate(R.layout.fragment_newgiftcard, container, false);
 
-
+        if (getArguments() != null) {
+            isUpdating = true;
+        } else {
+            isUpdating = false;
+        }
 
         confirmationFab = giftCardFragmentLayout.findViewById(R.id.confirmationFab);
         barcodeTextView = giftCardFragmentLayout.findViewById(R.id.enterBarcodeField);
@@ -91,6 +89,8 @@ public class NewGiftCardFragment extends Fragment implements DatePickerFragment.
         autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
         autocompleteFragment.getView().setBackgroundColor(Color.WHITE);
 
+
+
         // Set up a PlaceSelectionListener to handle the response.
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
@@ -105,9 +105,6 @@ public class NewGiftCardFragment extends Fragment implements DatePickerFragment.
                 Log.i(TAG, "An error occurred: " + status);
             }
         });
-
-        //autocompleteFragment.
-
 
 
 
@@ -133,7 +130,11 @@ public class NewGiftCardFragment extends Fragment implements DatePickerFragment.
                     executorService.execute(new Runnable() {
                         @Override
                         public void run() {
-                            GiftCardListFragment.giftCardDatabase.giftCardDao().addNewGiftCard(giftCardToBeAdded);
+                            if (isUpdating) {
+                                GiftCardListFragment.giftCardDatabase.giftCardDao().updateCard(giftCardToBeAdded);
+                            } else {
+                                GiftCardListFragment.giftCardDatabase.giftCardDao().addNewGiftCard(giftCardToBeAdded);
+                            }
 
                         }
                     });
@@ -182,8 +183,17 @@ public class NewGiftCardFragment extends Fragment implements DatePickerFragment.
         } else {
             float f = Float.parseFloat(balanceTextView.getEditText().getText().toString());
             Integer i = Integer.parseInt(pincodeTextView.getEditText().getText().toString());
-            giftCardToBeAdded = new Giftcard(selectedMerchant, f, date, barcodeTextView.getEditText().getText().toString(),
-                    i);
+            if (giftCardToBeAdded == null) {
+                giftCardToBeAdded = new Giftcard(selectedMerchant, f, date, barcodeTextView.getEditText().getText().toString(),
+                        i);
+            } else {
+                giftCardToBeAdded.cardBalance = f;
+                giftCardToBeAdded.cardPinCode = i;
+                giftCardToBeAdded.cardName = selectedMerchant;
+                giftCardToBeAdded.cardExpiration = date;
+                giftCardToBeAdded.cardBarcodeNumber = barcodeTextView.getEditText().getText().toString();
+            }
+
             return true;
         }
 

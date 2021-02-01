@@ -57,7 +57,7 @@ public class GiftCardLocationService extends Service {
     public static String USE_LOCATION_SERVICES = "uselocationservices";
     public static final String baseUrl = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=";
     public static final String endUrl = "&radius=1500&type=restaurant&key=AIzaSyDhsoZx1j9eqOm5SmRbSOfnUi6ZgKGPFV8";
-    public static final String testUrl = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=40.1020,-88.2272&radius=1500&type=restaurant&key=AIzaSyCqYR9FNPeSVJ5CrB41ii5gzQnvnepgGy4";
+    public static final String testUrl = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=40.1020,-88.2272&radius=1500&type=restaurant&key=AIzaSyD_bEHcl4NAJzxYtsGChrGS9dNRNYAdfqo";
 
 
     private String createUrlBasedOnLocation(double lat, double lon) {
@@ -164,7 +164,6 @@ public class GiftCardLocationService extends Service {
         }
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
                 (Request.Method.GET, createUrlBasedOnLocation(lat, lon), null, new Response.Listener<JSONObject>() {
-
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
@@ -180,9 +179,6 @@ public class GiftCardLocationService extends Service {
                                     Log.i(TAG, "You have a gift card for " + storeName + "!");
                                     nearbyLocations.add(storeName);
                                 }
-
-
-
                             }
                             updateNotification(nearbyLocations);
 

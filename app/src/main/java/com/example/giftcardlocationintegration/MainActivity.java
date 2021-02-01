@@ -21,17 +21,23 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.widget.Toast;
 
+import java.util.Date;
+
 public class MainActivity extends AppCompatActivity implements GiftCardListFragment.Callbacks {
 
     private Fragment currentFragment;
     private String TAG = "MainActivity";
-    private int LOCATION_PERMISSION_CODE = 1;
+    public static int LOCATION_PERMISSION_CODE = 1;
+    public static String CARD_NAME_KEY = "CARDNAME";
+    public static String DATE_KEY = "DATE";
+    public static String BALANCE_KEY = "BALANCE";
+    public static String BARCODE_KEY = "BARCODE";
+    public static String PINCODE_KEY = "PINCODE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        permissionCheck();
 
 
 
@@ -45,18 +51,10 @@ public class MainActivity extends AppCompatActivity implements GiftCardListFragm
             GiftCardViewHolder.context = this;
         }
 
-        //
-
-
-
 
     }
 
-   /* @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.mainmenu, menu);
-        return true;
-    } */
+
 
 
 
@@ -71,47 +69,18 @@ public class MainActivity extends AppCompatActivity implements GiftCardListFragm
 
     }
 
-    public void permissionCheck() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            Log.i(TAG, "granted");
-        } else {
-            requestLocationPermissions();
-        }
-    }
-
-    private void requestLocationPermissions() {
-        if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
-            new AlertDialog.Builder(this)
-                    .setTitle("Needed permissions")
-                    .setMessage("This app needs to access location in order to notify you of nearby giftcard locations")
-                    .setPositiveButton("ok", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            ActivityCompat.requestPermissions(MainActivity.this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_CODE);
-                        }
-                    })
-                    .setNegativeButton("cancel", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            dialog.dismiss();
-                        }
-                    })
-                    .create()
-                    .show();
-        } else {
-            ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, LOCATION_PERMISSION_CODE);
-        }
-    }
-
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        if (requestCode == LOCATION_PERMISSION_CODE) {
-            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "Permission granted", Toast.LENGTH_SHORT).show();
-            } else {
-                Toast.makeText(this, "Permission not granted", Toast.LENGTH_SHORT).show();
-
-            }
-        }
+    public void editExistingCard(String cardName, float cardBalance, Date cardExpiration, String cardBarcodeNumber, int cardPinCode) {
+        Log.i(TAG, "editExistingCard");
+        NewGiftCardFragment newGiftCardFragment = NewGiftCardFragment.newInstance();
+        Bundle bundle = new Bundle();
+        bundle.putString(CARD_NAME_KEY, cardName);
+        bundle.putFloat(BALANCE_KEY, cardBalance);
+        newGiftCardFragment.selectedDate = cardExpiration;
+        bundle.putString(BARCODE_KEY, cardBarcodeNumber);
+        bundle.putInt(PINCODE_KEY, cardPinCode);
+        newGiftCardFragment.setArguments(bundle);
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, newGiftCardFragment).addToBackStack(null).commit();
     }
+
 }
