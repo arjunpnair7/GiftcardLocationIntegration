@@ -76,6 +76,7 @@ public class GiftCardLocationService extends Service {
         return super.onStartCommand(intent, flags, startId);
     }
 
+    @SuppressLint("MissingPermission")
     @Override
     public void onCreate() {
         super.onCreate();
@@ -146,8 +147,8 @@ public class GiftCardLocationService extends Service {
 
     protected void createLocationRequest() {
         locationRequest = LocationRequest.create();
-        locationRequest.setInterval(3000);
-        locationRequest.setFastestInterval(3000);
+        locationRequest.setInterval(1000);
+        locationRequest.setFastestInterval(5000);
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
     }
 
